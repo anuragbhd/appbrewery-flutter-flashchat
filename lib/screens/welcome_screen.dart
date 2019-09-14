@@ -9,7 +9,33 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController _animationController;
+  Animation _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.animateLogo();
+  }
+
+  void animateLogo() {
+    this._animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    this._animationController.addListener(() => this.setState(() {}));
+
+    this._animation = CurvedAnimation(
+      curve: Curves.easeIn,
+      parent: this._animationController,
+    );
+
+    this._animationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +52,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: this._animation.value * 100,
+                    //height: 60.0,
                   ),
                 ),
                 Text(

@@ -12,15 +12,16 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen>
-    with SingleTickerProviderStateMixin {
-  AnimationController _logoAnimationCtrl;
-  Animation _logoAnimation;
+    with TickerProviderStateMixin {
+  AnimationController _logoAnimationCtrl, _bgAnimationCtrl;
+  Animation _logoAnimation, _bgAnimation;
 
   @override
   void initState() {
     super.initState();
 
     this.animateLogo();
+    this.animateBackground();
   }
 
   void animateLogo() {
@@ -38,10 +39,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     this._logoAnimationCtrl.forward();
   }
 
+  void animateBackground() {
+    this._bgAnimationCtrl = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+    this._bgAnimationCtrl.addListener(() => this.setState(() {}));
+
+    this._bgAnimation = ColorTween(
+      begin: Colors.yellowAccent,
+      end: Colors.white,
+    ).animate(this._bgAnimationCtrl);
+
+    this._bgAnimationCtrl.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: this._bgAnimation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(

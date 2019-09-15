@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'message_bubble.dart';
 
 class MessageStream extends StatelessWidget {
   final _firestore = Firestore.instance;
+  final FirebaseUser loggedInUser;
+
+  MessageStream({this.loggedInUser});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class MessageStream extends StatelessWidget {
           messageBubbles.add(MessageBubble(
             text: text,
             sender: sender,
+            isMe: sender == this.loggedInUser.email,
           ));
         }
         return Expanded(

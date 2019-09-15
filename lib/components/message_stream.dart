@@ -15,7 +15,7 @@ class MessageStream extends StatelessWidget {
       stream: this
           ._firestore
           .collection('messages')
-          .orderBy('timestamp')
+          .orderBy('timestamp', descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -38,6 +38,7 @@ class MessageStream extends StatelessWidget {
         }
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
             children: messageBubbles,
           ),
